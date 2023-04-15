@@ -34,6 +34,38 @@ const socials = [
 ];
 
 const Header = () => {
+
+  // Bonus part of the exercise 
+
+  const headerRef = useRef(null);
+
+  useEffect (() => {
+
+    let scrollStart = window.scrollY;
+    
+    const handleScroll = () => {
+      const scrollCurrent = window.scrollY;
+      if(!headerRef.current) {
+        return;
+      }
+      if (scrollCurrent > scrollStart) {
+        headerRef.current.style.transform = 'translateY(-200px)';
+      } else {
+        headerRef.current.style.transform = 'translateY(0)';
+      }
+      scrollStart = scrollCurrent;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+
+  },[]);
+
+  /// End of Bonus part
+
   const handleClick = (anchor) => () => {
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
@@ -45,6 +77,8 @@ const Header = () => {
     }
   };
 
+
+/// Added social media links and projects and contact me link to the header.
   return (
     <Box
       position="fixed"
@@ -56,6 +90,7 @@ const Header = () => {
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#18181b"
+      ref={headerRef}
     >
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
@@ -65,6 +100,7 @@ const Header = () => {
           alignItems="center"
         >
           <nav>
+
             <HStack spacing={10}>
               {socials.map(({ icon, url}) => (
                 <a 
